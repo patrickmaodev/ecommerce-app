@@ -24,7 +24,7 @@ class ProductProvider with ChangeNotifier {
 
     try {
       _products = await _productService.fetchProducts();
-      notifyListeners(); // Notify UI components of state change
+      notifyListeners();
     } catch (e) {
       _setError('Failed to load products: $e');
     } finally {
