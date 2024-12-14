@@ -6,7 +6,7 @@ import '../utils/constants.dart';
 class ProductService {
   // Fetch all products
   Future<List<Product>> fetchProducts() async {
-    final response = await http.get(Uri.parse(ApiConstants.productsEndpoint));
+    final response = await http.get(Uri.parse(Api.productsEndpoint));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -18,7 +18,7 @@ class ProductService {
 
   // Fetch product by ID
   Future<Product> fetchProductById(String productId) async {
-    final response = await http.get(Uri.parse('${ApiConstants.productsEndpoint}/$productId'));
+    final response = await http.get(Uri.parse('${Api.productsEndpoint}/$productId'));
 
     if (response.statusCode == 200) {
       return Product.fromJson(json.decode(response.body));
@@ -30,7 +30,7 @@ class ProductService {
   // Add a new product
   Future<Product> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse(ApiConstants.productsEndpoint),
+      Uri.parse(Api.productsEndpoint),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(product.toJson()),
     );
@@ -45,7 +45,7 @@ class ProductService {
   // Update product details
   Future<Product> updateProduct(String productId, Product product) async {
     final response = await http.put(
-      Uri.parse('${ApiConstants.productsEndpoint}/$productId'),
+      Uri.parse('${Api.productsEndpoint}/$productId'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(product.toJson()),
     );
@@ -59,7 +59,7 @@ class ProductService {
 
   // Delete a product
   Future<void> deleteProduct(String productId) async {
-    final response = await http.delete(Uri.parse('${ApiConstants.productsEndpoint}/$productId'));
+    final response = await http.delete(Uri.parse('${Api.productsEndpoint}/$productId'));
 
     if (response.statusCode != 204) {
       throw Exception('Failed to delete product');

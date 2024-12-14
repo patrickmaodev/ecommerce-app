@@ -14,34 +14,35 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.14.1
   http: ^1.2.2
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
   
   assets:
-    - assets/logo/
     - assets/images/
+    - assets/logo/
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logo/logo.png"
+  image_path: "assets/logo/logo.jpg"
   min_sdk_android: 21
   web:
     generate: true
-    image_path: "assets/logo/logo.png"
+    image_path: "assets/logo/logo.jpg"
     background_color: "#hexcode"
     theme_color: "#hexcode"
   windows:
     generate: true
-    image_path: "assets/logo/logo.png"
+    image_path: "assets/logo/logo.jpg"
     icon_size: 48
   macos:
     generate: true
-    image_path: "assets/logo/logo.png"
+    image_path: "assets/logo/logo.jpg"
