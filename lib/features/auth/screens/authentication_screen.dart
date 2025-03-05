@@ -1,14 +1,16 @@
+import 'package:ecommerce_app/app/app_theme.dart';
+import 'package:ecommerce_app/features/auth/screens/login_screen.dart';
+import 'package:ecommerce_app/features/auth/screens/register_screen.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
-import 'register_screen.dart';
-import '../app/app_theme.dart';
 
 class AuthenticationScreen extends StatefulWidget {
+  const AuthenticationScreen({super.key});
+
   @override
-  _AuthenticationScreenState createState() => _AuthenticationScreenState();
+  AuthenticationScreenState createState() => AuthenticationScreenState();
 }
 
-class _AuthenticationScreenState extends State<AuthenticationScreen> {
+class AuthenticationScreenState extends State<AuthenticationScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [

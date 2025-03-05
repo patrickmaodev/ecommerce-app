@@ -1,6 +1,7 @@
+import 'package:ecommerce_app/app/app_theme.dart';
+import 'package:ecommerce_app/helpers/route_helper.dart';
 import 'package:flutter/material.dart';
-import '../app/app_theme.dart';
-import 'authentication_screen.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,10 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigateToHome() async {
     await Future.delayed(const Duration(seconds: 3));
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => AuthenticationScreen()),
-      );
+      Get.offNamed(RouteHelper.initial);
     }
   }
 

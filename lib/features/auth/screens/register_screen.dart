@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../app/app_theme.dart';
-import 'home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
+  final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  LoginScreen({super.key});
+  RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +17,14 @@ class LoginScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
             _buildInputField(
+              controller: _phoneController,
+              label: 'Phone Number',
+              keyboardType: TextInputType.phone,
+            ),
+            const SizedBox(height: 20),
+            _buildInputField(
               controller: _emailController,
-              label: 'Email or Phone Number',
+              label: 'Email',
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
@@ -30,12 +35,8 @@ class LoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             _buildActionButton(
-              text: 'Login',
+              text: 'Register',
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
               },
             ),
           ],

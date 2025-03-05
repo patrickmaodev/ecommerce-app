@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'app/app_theme.dart';
-import 'screens/splash_screen.dart';
+import 'package:get/get.dart';
+import 'package:ecommerce_app/app/app_theme.dart';
+import 'package:ecommerce_app/helpers/route_helper.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,11 +12,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'AnyWhere App',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const SplashScreen(),
+      initialRoute: RouteHelper.getSplashRoute(),
+      getPages: RouteHelper.routes,
     );
   }
 }

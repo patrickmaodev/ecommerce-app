@@ -1,12 +1,12 @@
+import 'package:ecommerce_app/helpers/route_helper.dart';
 import 'package:flutter/material.dart';
-import '../app/app_theme.dart';
+import 'package:get/get.dart';
 
-class RegisterScreen extends StatelessWidget {
-  final _phoneController = TextEditingController();
+class LoginScreen extends StatelessWidget {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  RegisterScreen({super.key});
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +18,8 @@ class RegisterScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
             _buildInputField(
-              controller: _phoneController,
-              label: 'Phone Number',
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 20),
-            _buildInputField(
               controller: _emailController,
-              label: 'Email',
+              label: 'Email or Phone Number',
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
@@ -36,8 +30,9 @@ class RegisterScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             _buildActionButton(
-              text: 'Register',
+              text: 'Login',
               onPressed: () {
+                Get.offNamed(RouteHelper.initial);
               },
             ),
           ],
