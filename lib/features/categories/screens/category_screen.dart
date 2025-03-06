@@ -1,4 +1,7 @@
+import 'package:ecommerce_app/api/api_client.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ecommerce_app/features/categories/controllers/category_controller.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -8,15 +11,16 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  final Map<String, List<String>> _categories = {
-    'Electronics': ['Phone', 'Laptop', 'Headphones', 'Camera'],
-    'Clothing': ['T-Shirts', 'Jeans', 'Jackets', 'Shoes'],
-    'Home Appliances': ['Refrigerator', 'Microwave', 'Washing Machine', 'Air Conditioner'],
-    'Books': ['Fiction', 'Science', 'History', 'Biography'],
-  };
+  final CategoryController _categoryController = Get.put(CategoryController(ApiClient()));
 
-  String _selectedCategory = 'Electronics';
+  String _selectedCategory = '';
   String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _categoryController.fetchCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,100 +50,106 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
         ),
       ),
-      body: Row(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.3,
-            color: Colors.grey.shade200,
-            child: ListView.builder(
-              itemCount: _categories.keys.length,
-              itemBuilder: (context, index) {
-                final category = _categories.keys.elementAt(index);
-                final isSelected = _selectedCategory == category;
+      body: Obx(() {
+        if (_categoryController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedCategory = category;
-                    });
-                  },
-                  child: Container(
-                    color: isSelected ? Colors.black : Colors.transparent,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                    child: Text(
-                      category,
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+        if (_selectedCategory.isEmpty && _categoryController.categories.isNotEmpty) {
+          _selectedCategory = _categoryController.categories.first.name;
 
-          Expanded(
-            child: Container(
-              color: Colors.white,
-              child: (_categories[_selectedCategory]!
-                      .where((item) => item.toLowerCase().contains(_searchQuery))
-                      .isEmpty)
-                  ? const Center(
+          _categoryController.fetchCategoryProducts(_categoryController.categories.first.id);
+        }
+
+        return Row(
+          children: [
+            // Category List
+            Container(
+              width: MediaQuery.of(context).size.width * 0.3,
+              color: Colors.grey.shade200,
+              child: ListView.builder(
+                itemCount: _categoryController.categories.length,
+                itemBuilder: (context, index) {
+                  final category = _categoryController.categories[index];
+                  final isSelected = _selectedCategory == category.name;
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedCategory = category.name;
+                      });
+
+                      _categoryController.fetchCategoryProducts(category.id);
+                    },
+                    child: Container(
+                      color: isSelected ? Colors.black : Colors.transparent,
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       child: Text(
-                        'No products found',
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
+                        category.name,
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          fontSize: 16,
+                        ),
                       ),
-                    )
-                  : GridView.builder(
-                      padding: const EdgeInsets.all(12),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 2 / 3,
-                      ),
-                      itemCount: _categories[_selectedCategory]!
-                          .where((item) => item.toLowerCase().contains(_searchQuery))
-                          .length,
-                      itemBuilder: (context, index) {
-                        final filteredList = _categories[_selectedCategory]!
-                            .where((item) => item.toLowerCase().contains(_searchQuery))
-                            .toList();
-                        final subProduct = filteredList[index];
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.shopping_bag,
-                                size: 40,
-                                color: Colors.grey.shade700,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                subProduct,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
                     ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
-      ),
+
+            Expanded(
+              child: Container(
+                color: Colors.white,
+                child: (_categoryController.categoryProducts.isEmpty)
+                    ? const Center(
+                        child: Text(
+                          'No products available',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                      )
+                    : GridView.builder(
+                        padding: const EdgeInsets.all(12),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 2 / 3,
+                        ),
+                        itemCount: _categoryController.categoryProducts.length,
+                        itemBuilder: (context, index) {
+                          final product = _categoryController.categoryProducts[index];
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.network(product.imageUrl),
+                                const SizedBox(height: 10),
+                                Text(
+                                  product.name,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text('\$${product.price}', style: TextStyle(color: Colors.green)),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }
+
