@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/app/app_theme.dart';
+import 'package:ecommerce_app/utils/app_theme.dart';
 import 'package:ecommerce_app/features/auth/screens/login_screen.dart';
 import 'package:ecommerce_app/features/auth/screens/register_screen.dart';
 import 'package:flutter/material.dart';

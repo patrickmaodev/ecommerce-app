@@ -9,12 +9,11 @@ class ApiClient {
   final Map<String, String> headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
   };
 
   Future<dynamic> getData(String endpoint) async {
     try {
-      final response = await http.get(Uri.parse('$appBaseUrl/$endpoint'), headers: headers);
+      final response = await http.get(Uri.parse(endpoint), headers: headers);
       return _handleResponse(response);
     } catch (e) {
       throw Exception("Failed to connect to server: $e");
@@ -24,7 +23,7 @@ class ApiClient {
   Future<dynamic> postData(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await http.post(
-        Uri.parse('$appBaseUrl/$endpoint'),
+        Uri.parse(endpoint),
         headers: headers,
         body: jsonEncode(data),
       );
@@ -37,7 +36,7 @@ class ApiClient {
   Future<dynamic> putData(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await http.put(
-        Uri.parse('$appBaseUrl/$endpoint'),
+        Uri.parse(endpoint),
         headers: headers,
         body: jsonEncode(data),
       );
@@ -49,7 +48,7 @@ class ApiClient {
 
   Future<dynamic> deleteData(String endpoint) async {
     try {
-      final response = await http.delete(Uri.parse('$appBaseUrl/$endpoint'), headers: headers);
+      final response = await http.delete(Uri.parse(endpoint), headers: headers);
       return _handleResponse(response);
     } catch (e) {
       throw Exception("Failed to connect to server: $e");

@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/features/categories/models/category_model.dart';
+import 'package:ecommerce_app/features/categories/models/sub_category_model.dart';
 import 'package:ecommerce_app/features/categories/repositories/category_repository.dart';
 import 'package:ecommerce_app/features/categories/services/category_service_interface.dart';
-import 'package:ecommerce_app/features/products/models/product_model.dart';
 
 class CategoryService implements CategoryServiceInterface {
   final CategoryRepository categoryRepository;
@@ -14,7 +14,7 @@ class CategoryService implements CategoryServiceInterface {
   }
 
   @override
-  Future<List<ProductModel>> getCategoryProducts(int categoryId) async {
+  Future<List<SubCategoryModel>> getCategoryProducts(int categoryId) async {
     return await categoryRepository.fetchCategoryProducts(categoryId);
   }
 

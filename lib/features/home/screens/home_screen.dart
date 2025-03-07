@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/app/app_theme.dart';
+import 'package:ecommerce_app/utils/app_theme.dart';
 import 'package:ecommerce_app/features/cart/screens/cart_screen.dart';
 import 'package:ecommerce_app/features/categories/screens/category_screen.dart';
 import 'package:ecommerce_app/features/home/screens/default_home_screen.dart';
@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late int _selectedIndex;
 
   final List<Widget> _screens = [
-    const DefaultHomeScreen(),
+    DefaultHomeScreen(),
     const CategoryScreen(),
     const CartScreen(),
     const ProfileScreen(),
